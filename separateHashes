@@ -1,0 +1,6 @@
+#!/bin/bash
+
+grep '^$s' $1 >> sha1.hashes
+grep '^$6' $1 >> sha512.hashes
+grep '^$a' $1 >> argon.hashes
+grep '^$p' $1 >> pbkdf2.hashes
