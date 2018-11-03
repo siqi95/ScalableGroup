@@ -91,7 +91,7 @@ def decrypt(ciphertext, key):
     dec = base64.b64decode(ciphertext)
     iv = dec[:16]
     cipher = AES.new(key,AES.MODE_CBC,iv) 
-    return (cipher.decrypt(ciphertext))
+    return unpad(cipher.decrypt(ciphertext[16:]))
 
 def encrypt(raw, key):
     raw = pad(raw)
@@ -114,5 +114,7 @@ with open("dec.txt","w+") as newF, open("layer1.broken") as broken,  open("00072
         kinds.append(hashes.index(hashpass[0]))
         kpwds.append(hashpass[1])
     secret = pwds_shares_to_secret(kpwds,kinds,shares)
+    print secret.zfill(32).decode('hex')
+    nextlev = decrypt(ball["ciphertext"],secret.zfill(32).decode('hex'))
     print secret
-    newF.write(decrypt(ball["ciphertext"],secret.zfill(32).decode('hex')))
+    newF.write(nextlev)
