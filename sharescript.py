@@ -111,7 +111,7 @@ BLOCK_SIZE = 16
 
 pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)
 
-with open("dec.txt", "w+") as newF, open("layer1.broken") as broken, open("00072_oharaj2.as5") as ballfile:
+with open(sys.argv[1]) as broken, open(sys.argv[2], "w+") as outputFile, open(sys.argv[3]) as ballfile:
     cracked = map(lambda x: x.split(':'), broken.read().splitlines())
     ball = json.load(ballfile)
     hashes = ball["hashes"]
@@ -124,4 +124,4 @@ with open("dec.txt", "w+") as newF, open("layer1.broken") as broken, open("00072
     secret = pwds_shares_to_secret(kpwds, kinds, shares)
     nextlev = decrypt(ball["ciphertext"], secret.zfill(32).decode('hex'))
     print secret
-    newF.write(str(nextlev))
+    outputFile.write(str(nextlev))
